@@ -92,8 +92,7 @@ public class ClientHandler extends Thread {
                     Server.message(ProtocolStrings.MESSAGE + getUserName() + "#", message, partsArray[1]);
                 }
             }
-//            Server.message(message);
-            Logger.getLogger(Server.class.getName()).log(Level.INFO, String.format("Returned the message: %1$S ", message.toUpperCase()));
+            Logger.getLogger(Server.class.getName()).log(Level.INFO, String.format("Returned the message: %1$S ", message));
             message = input.nextLine(); //IMPORTANT blocking call
         }
         writer.println(ProtocolStrings.CLOSE); //Echo the stop message back to the client for a nice closedown
