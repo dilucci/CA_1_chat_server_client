@@ -71,17 +71,17 @@ public class ClientHandler extends Thread {
             if (command.equals(ProtocolStrings.SEND)) {
                 message = partsArray[2];
                 if (partsArray[1].equals("*")) {                    // sends to all users
-                    Server.send(ProtocolStrings.MESSAGE + getUserName() + "#", message);
+                    Server.message(ProtocolStrings.MESSAGE + getUserName() + "#", message);
                 }
                 if (partsArray[1].contains(",")) {                  // sends to specified users
                     String[] receivers = partsArray[1].split(",");
-                    Server.send(ProtocolStrings.MESSAGE + getUserName() + "#", message, receivers);
+                    Server.message(ProtocolStrings.MESSAGE + getUserName() + "#", message, receivers);
                 }
                 else {                                              // sends to 1 user
-                    Server.send(ProtocolStrings.MESSAGE + getUserName() + "#", message, partsArray[1]);
+                    Server.message(ProtocolStrings.MESSAGE + getUserName() + "#", message, partsArray[1]);
                 }
             }
-//            Server.send(message);
+//            Server.message(message);
             Logger.getLogger(Server.class.getName()).log(Level.INFO, String.format("Returned the message: %1$S ", message.toUpperCase()));
             message = input.nextLine(); //IMPORTANT blocking call
         }

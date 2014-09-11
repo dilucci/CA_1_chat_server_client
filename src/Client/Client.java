@@ -29,7 +29,7 @@ public class Client extends Thread {
     private String message;
     private String userName;
     private ArrayList<String> onlineUserList = new ArrayList<>();
-    private boolean keepListening;
+    private boolean keepListening = true;
 
     public void connect(String address, int port, String name) throws UnknownHostException, IOException {
         if (socket == null) {

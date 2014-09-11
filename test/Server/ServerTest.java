@@ -6,6 +6,7 @@
 
 package Server;
 
+import java.io.IOException;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -16,114 +17,108 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Seb
+ * @author Gruppe 4, Andreas, Michael og Sebastian
  */
 public class ServerTest {
+    
+    MockClient mockClientIb;
+    MockClient mockClientHans;
     
     public ServerTest() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
+//    @BeforeClass
+//    public static void setUpClass() {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Server.main(null);
+//            }
+//        }).start();
+//    }
+//    
+//    @AfterClass
+//    public static void tearDownClass() {
+//        Server.stopServer();
+//       
+//    }
     
     @Before
     public void setUp() {
+        
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Server.main(null);
+            }
+        }).start();
+        
+        mockClientIb = new MockClient();
+        mockClientHans = new MockClient();
     }
     
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of stopServer method, of class Server.
-     */
-    @Test
-    public void testStopServer() {
-        System.out.println("stopServer");
         Server.stopServer();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of removeHandler method, of class Server.
+        /**
+     * Test of message method, of class Server.
      */
     @Test
-    public void testRemoveHandler() {
-        System.out.println("removeHandler");
-        ClientHandler ch = null;
-        Server.removeHandler(ch);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getNumberOfClients method, of class Server.
-     */
-    @Test
-    public void testGetNumberOfClients() throws Exception {
-        System.out.println("getNumberOfClients");
-        int expResult = 0;
-        int result = Server.getNumberOfClients();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getClients method, of class Server.
-     */
-    @Test
-    public void testGetClients() {
-        System.out.println("getClients");
-        Server instance = new Server();
-        List<ClientHandler> expResult = null;
-        List<ClientHandler> result = instance.getClients();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of send method, of class Server.
-     */
-    @Test
-    public void testSend() {
-        System.out.println("send");
-        String messageString = "";
-        String msg = "";
-        String[] receivers = null;
-        Server.send(messageString, msg, receivers);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of broadcastUserList method, of class Server.
-     */
-    @Test
-    public void testBroadcastUserList() {
-        System.out.println("broadcastUserList");
-        Server.broadcastUserList();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of main method, of class Server.
-     */
-    @Test
-    public void testMain() {
-        System.out.println("main");
-        String[] args = null;
-        Server.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+    public void testOnlineSendClose() throws IOException {
+        mockClientIb.connect("localhost", 9090, "Ib");
+        assertEquals("ONLINE#Ib", mockClientIb.inputClientString());
+        
+        mockClientHans.connect("localhost", 9090, "Hans");
+        assertEquals("ONLINE#Ib,Hans", mockClientIb.inputClientString());
+        assertEquals("ONLINE#Ib,Hans", mockClientHans.inputClientString());
+        
+        mockClientIb.command("SEND#Hans#Hej Hans");
+        assertEquals("MESSAGE#Ib#Hej Hans", mockClientHans.inputClientString());
+        
+       
+        mockClientIb.command("SEND#Hans,Ib#Hej Hans og mig selv");
+        assertEquals("MESSAGE#Ib#Hej Hans og mig selv", mockClientHans.inputClientString());
+        assertEquals("MESSAGE#Ib#Hej Hans og mig selv", mockClientIb.inputClientString());
+        
+        mockClientIb.command("SEND#*#Hej alle");
+        assertEquals("MESSAGE#Ib#Hej alle", mockClientHans.inputClientString());
+        assertEquals("MESSAGE#Ib#Hej alle", mockClientIb.inputClientString());
+        
+        mockClientIb.command("CLOSE#");
+        assertEquals("CLOSE#", mockClientIb.inputClientString());
+        assertEquals("ONLINE#Hans", mockClientHans.inputClientString());
+    }    
+    
+    
+//    /**
+//     * Test of message method, of class Server.
+//     */
+//    @Test
+//    public void testOnline() throws IOException {
+//        mockClientIb.connect("localhost", 9090, "Ib");
+//        assertEquals("ONLINE#Ib", mockClientIb.inputClientString());
+//        
+//        mockClientHans.connect("localhost", 9090, "Hans");
+//        assertEquals("ONLINE#Ib,Hans", mockClientIb.inputClientString());
+//        assertEquals("ONLINE#Ib,Hans", mockClientHans.inputClientString());
+//    }    
+//    
+//    /**
+//     * Test of message method, of class Server.
+//     */
+//    @Test
+//    public void testMessage() throws IOException {
+//        mockClientIb.connect("localhost", 9090, "Ib");
+//        assertEquals("ONLINE#Ib", mockClientIb.inputClientString());
+//        
+//        mockClientHans.connect("localhost", 9090, "Hans");
+//        assertEquals("ONLINE#Ib,Hans", mockClientHans.inputClientString());
+//        
+//        mockClientIb.command("SEND#Hans#Hej Hans");
+//        assertEquals("MESSAGE#Ib#Hej Hans", mockClientHans.inputClientString());
+//    }
+    
     
 }

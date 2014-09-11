@@ -39,7 +39,7 @@ public class Server {
         return clients;
     }
 
-    public static void send(String messageString, String msg, String... receivers) {
+    public static void message(String messageString, String msg, String... receivers) {
         if (receivers.length > 0) {  // sends to specific users if array.length > 0
             for (String receiver : receivers) {
                 for (ClientHandler ch : clients) {
