@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Project Page</title>
+		<title>Chat-server</title>
 	</head>
 	<body>
 	<h1>CA-1 Home</h1>
@@ -12,7 +12,11 @@
 			<li><a href="pages/chatLog_output.html">Chat Server Log File</a></li>
 		</ul>
 	</nav>
-	<p>Dato: dd-mm-yyyy</p>
+	<p id="demo"></p>
+
+	<script>
+	document.getElementById("demo").innerHTML = Date();
+	</script>
 	
 	<h1>The Chat Client</h1>
 	<p>Download the chat client as an executable jar file (requires Java). To test the client by yourself, start more than one instance (each with a unique user name)</p>
@@ -20,7 +24,9 @@
 	
 	<h1>Documentation</h1>
 	<p>Documentation for the exercise should be added to the projects page</p>
-	<a href="pages/documentation.txt">View Documentation &#187</a><br><br>
+	<p>Documentation for the exercise should be added to the projects page</p>
+	<p>Documentation for the exercise should be added to the projects page</p>
+	
 	<a href="https://github.com/foosah/CA_1_chat_server_client">View Source (GIT) &#187</a>
 	<hr>
 	<p>This site is hosted on a minimal proof of concept web server, implemented via the Java Socket API - Hackers, please stay away ;-)</p><br>
