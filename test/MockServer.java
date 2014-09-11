@@ -1,6 +1,6 @@
 
-import echoserver.ClientHandler;
-import echoserver.EchoServer;
+import Server.ClientHandler;
+import Server.Server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
@@ -16,9 +16,10 @@ import utils.Utils;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 /**
  *
- * @author Michael
+ * @author Gruppe 4, Andreas, Michael og Sebastian
  */
 public class MockServer {
 
@@ -41,10 +42,10 @@ public class MockServer {
             while (keepRunning);
         }
         catch (IOException ex) {
-            Logger.getLogger(EchoServer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally {
-            Utils.closeLogger(EchoServer.class.getName());
+            Utils.closeLogger(Server.class.getName());
         }
     }
     

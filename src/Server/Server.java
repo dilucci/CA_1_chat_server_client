@@ -1,4 +1,4 @@
-package echoserver;
+package Server;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -11,7 +11,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import utils.Utils;
 
-public class EchoServer {
+/**
+ *
+ * @author Gruppe 4, Andreas, Michael og Sebastian
+ */
+public class Server {
 
     private static boolean keepRunning = true;
     private static ServerSocket serverSocket;
@@ -25,13 +29,13 @@ public class EchoServer {
     protected static void removeHandler(ClientHandler ch) {
         clients.remove(ch);
     }
-    
-    public static int getNumberOfClients() throws InterruptedException{
+
+    public static int getNumberOfClients() throws InterruptedException {
         Thread.sleep(100); //fake pause
         return clients.size();
     }
-    
-    public List<ClientHandler> getClients(){
+
+    public List<ClientHandler> getClients() {
         return clients;
     }
 
@@ -40,14 +44,14 @@ public class EchoServer {
             for (String receiver : receivers) {
                 for (ClientHandler ch : clients) {
                     if (ch.getUserName().equals(receiver)) {
-                        ch.send(messageString+msg);
+                        ch.send(messageString + msg);
                     }
                 }
             }
         }
         else {
             for (ClientHandler ch : clients) {  // sends to all users, since none were specified
-                ch.send(messageString+msg);
+                ch.send(messageString + msg);
             }
         }
     }
@@ -66,14 +70,14 @@ public class EchoServer {
         int port = Integer.parseInt(properties.getProperty("port"));
         String ip = properties.getProperty("serverIp");
         String logFile = properties.getProperty("logFile");
-        Utils.setLogFile(logFile, EchoServer.class.getName());
-        Logger.getLogger(EchoServer.class.getName()).log(Level.INFO, "Server started");
+        Utils.setLogFile(logFile, Server.class.getName());
+        Logger.getLogger(Server.class.getName()).log(Level.INFO, "Server started");
         try {
             serverSocket = new ServerSocket();
             serverSocket.bind(new InetSocketAddress(ip, port));
             do {
                 Socket socket = serverSocket.accept(); //Important Blocking call
-                Logger.getLogger(EchoServer.class.getName()).log(Level.INFO, "Connected to a client");
+                Logger.getLogger(Server.class.getName()).log(Level.INFO, "Connected to a client");
                 ClientHandler clientHandler = new ClientHandler(socket);
                 clients.add(clientHandler);
                 clientHandler.start();
@@ -81,10 +85,10 @@ public class EchoServer {
             while (keepRunning);
         }
         catch (IOException ex) {
-            Logger.getLogger(EchoServer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally {
-            Utils.closeLogger(EchoServer.class.getName());
+            Utils.closeLogger(Server.class.getName());
         }
     }
 }

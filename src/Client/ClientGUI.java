@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package echoclient;
+package Client;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,17 +14,17 @@ import javax.swing.DefaultListModel;
 
 /**
  *
- * @author Seb
+ * @author Gruppe 4, Andreas, Michael og Sebastian
  */
-public class EchoClientGUI extends javax.swing.JFrame implements EchoListener {
+public class ClientGUI extends javax.swing.JFrame implements ClientListener {
 
-    private EchoClient client;
+    private Client client;
     private DefaultListModel<String> userListModel;
 
     /** Creates new form EchoClientGUI */
-    public EchoClientGUI() {
+    public ClientGUI() {
         initComponents();
-        client = new EchoClient();
+        client = new Client();
         client.registerEchoListener(this);
         userListModel = new DefaultListModel<>();
     }
@@ -225,7 +225,7 @@ public class EchoClientGUI extends javax.swing.JFrame implements EchoListener {
                 userListModel.clear();
             }
             catch (IOException ex) {
-                Logger.getLogger(EchoClientGUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_quitButtonActionPerformed
@@ -239,7 +239,7 @@ public class EchoClientGUI extends javax.swing.JFrame implements EchoListener {
                 client.connect(address, port, userName);
             }
             catch (IOException ex) {
-                Logger.getLogger(EchoClientGUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         else {
@@ -252,7 +252,7 @@ public class EchoClientGUI extends javax.swing.JFrame implements EchoListener {
             List<String> receivers = userList.getSelectedValuesList();
             String message = messageTextField.getText();
             for (String name : receivers) {
-                chatTextArea.append("To " + "[" + name +"]: " + message +"\n");
+                chatTextArea.append("To " + "[" + name + "]: " + message + "\n");
             }
             client.send(message, receivers);
             messageTextField.setText("");
@@ -264,7 +264,7 @@ public class EchoClientGUI extends javax.swing.JFrame implements EchoListener {
             client.stopClient();
         }
         catch (IOException ex) {
-            Logger.getLogger(EchoClientGUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_formWindowClosing
 
@@ -292,23 +292,23 @@ public class EchoClientGUI extends javax.swing.JFrame implements EchoListener {
             }
         }
         catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EchoClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EchoClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EchoClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EchoClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EchoClientGUI().setVisible(true);
+                new ClientGUI().setVisible(true);
             }
         });
     }

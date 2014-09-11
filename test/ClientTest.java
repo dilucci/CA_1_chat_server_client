@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 
-import echoclient.EchoClient;
+
+
+import Client.Client;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +17,18 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * @author Gruppe4
+ *
+ * @author Gruppe 4, Andreas, Michael og Sebastian
  */
-public class TestClient {
+public class ClientTest {
 
-    private EchoClient testClient1;
-    private EchoClient testClient2;
+    private Client testClient1;
+    private Client testClient2;
     private String ip;
     private int port;
     private static MockServer mockServer;
 
-    public TestClient() {
+    public ClientTest() {
     }
 
     @BeforeClass
@@ -34,8 +37,6 @@ public class TestClient {
             @Override
             public void run() {
                 MockServer.main(null);
-//                mockServer = new MockServer();
-//                mockServer.
             }
         }).start();
     }
@@ -46,8 +47,8 @@ public class TestClient {
 
     @Before
     public void setUp() throws IOException {
-        testClient1 = new EchoClient();
-        testClient2 = new EchoClient();
+        testClient1 = new Client();
+        testClient2 = new Client();
         ip = "localhost";
         port = 9090;
     }
@@ -56,11 +57,9 @@ public class TestClient {
     public void connect() throws IOException{
         testClient1.connect("localhost", 9090, "Hans");
         assertEquals("CONNECT#Hans", MockServer.inputServerString());
-//        testClient1.stopClient();
         
         testClient2.connect("localhost", 9090, "Ib");
         assertEquals("CONNECT#Ib", MockServer.inputServerString());
-//        testClient2.stopClient();
     }
     
     @Test

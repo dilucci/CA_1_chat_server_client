@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package echoclient;
+package Client;
 
 import java.util.ArrayList;
 
 /**
  *
- * @author Seb
+ * @author Gruppe 4, Andreas, Michael og Sebastian
  */
-public interface EchoListener {
+public interface ClientListener {
     public void messageArrived(String data);
     public void messageArrived(ArrayList<String> onlineUserList);
 }

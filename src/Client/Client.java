@@ -1,4 +1,4 @@
-package echoclient;
+package Client;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,20 +14,26 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import shared.ProtocolStrings;
 
-public class EchoClient extends Thread {
+/**
+ *
+ * @author Gruppe 4, Andreas, Michael og Sebastian
+ */
+public class Client extends Thread {
 
     private Socket socket;
     private int port;
     private InetAddress serverAddress;
     private Scanner input;
     private PrintWriter output;
-    private static List<EchoListener> listeners = new ArrayList();
+    private static List<ClientListener> listeners = new ArrayList();
     private String message;
     private String userName;
     private ArrayList<String> onlineUserList = new ArrayList<>();
+    private boolean keepListening;
 
     public void connect(String address, int port, String name) throws UnknownHostException, IOException {
         if (socket == null) {
+            keepListening = true;
             this.userName = name;
             this.port = port;
             serverAddress = InetAddress.getByName(address);
@@ -60,28 +66,29 @@ public class EchoClient extends Thread {
 
     public void stopClient() throws IOException {
         output.println(ProtocolStrings.CLOSE);
+        keepListening = false;
     }
 
     public void command(String commandString) {
         output.println(commandString);
     }
 
-    public void registerEchoListener(EchoListener l) {
+    public void registerEchoListener(ClientListener l) {
         listeners.add(l);
     }
 
-    public void unregisterEchoListener(EchoListener l) {
+    public void unregisterEchoListener(ClientListener l) {
         listeners.remove(l);
     }
 
     private void notifyListeners(String msg) {
-        for (EchoListener echoListener : listeners) {
+        for (ClientListener echoListener : listeners) {
             echoListener.messageArrived(msg);
         }
     }
 
     private void notifyListeners(ArrayList<String> onlineUserList) {
-        for (EchoListener echoListener : listeners) {
+        for (ClientListener echoListener : listeners) {
             echoListener.messageArrived(onlineUserList);
         }
     }
@@ -97,17 +104,17 @@ public class EchoClient extends Thread {
 //                socket.close();
 //            }
 //            catch (IOException ex) {
-//                Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
+//                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
 //            }
 //        }
 //        return msg;
 //    }
-
     @Override
     public void run() {
         String msg = input.nextLine();
 
-        while (!msg.equals(ProtocolStrings.CLOSE)) {
+        while (!msg.equals(ProtocolStrings.CLOSE) && keepListening) {
+
             String[] partsArray = msg.split("#");
             String command = partsArray[0] + "#";
             if (command.equals(ProtocolStrings.ONLINE)) {
@@ -122,7 +129,7 @@ public class EchoClient extends Thread {
                     newUserList.add(userListString);
                 }
                 if (onlineUserList.isEmpty()) {
-                    notifyListeners("Welcome to the chat-server "+"["+userName+"].");
+                    notifyListeners("Welcome to the chat-server " + "[" + userName + "].");
                 }
                 if (newUserList.size() > onlineUserList.size() && onlineUserList.size() > 0) {
                     notifyListeners("[" + newUserList.get(newUserList.size() - 1) + "] " + "connected."); //finds the last connected user
@@ -134,12 +141,12 @@ public class EchoClient extends Thread {
                         }
                     }
                 }
-                onlineUserList =  newUserList;
+                onlineUserList = newUserList;
                 Collections.sort(onlineUserList);
                 notifyListeners(onlineUserList);
             }
             if (command.equals(ProtocolStrings.MESSAGE)) {
-                String[] messageParts = msg.split("#",3);
+                String[] messageParts = msg.split("#", 3);
                 notifyListeners("From: " + "[" + messageParts[1] + "]" + ": " + messageParts[2]);
             }
             msg = input.nextLine();
@@ -149,7 +156,7 @@ public class EchoClient extends Thread {
             socket.close();
         }
         catch (IOException ex) {
-            Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
