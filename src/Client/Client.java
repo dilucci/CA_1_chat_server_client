@@ -159,14 +159,4 @@ public class Client extends Thread {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-//    private void stringReceiver(String message) {
-//        String[] partsArray = message.split("#");  // entire command including COMMAND, NAMES and MESSAGE. Should this be refactor into seperate method?
-//        String command = partsArray[0] + "#";
-//
-//        if (command.equals(ProtocolStrings.CONNECT)) {
-//            String name = partsArray[1];
-//            setUserName(name);
-//        }
-//    }
 }

@@ -31,7 +31,6 @@ public class Server {
     }
 
     public static int getNumberOfClients() throws InterruptedException {
-        Thread.sleep(100); //fake pause
         return clients.size();
     }
 

@@ -66,7 +66,18 @@ public class ClientHandler extends Thread {
             if (command.equals(ProtocolStrings.CONNECT)) { //add new users and broadcast new users connected.
                 String name = partsArray[1];
                 setUserName(name);
-                Server.broadcastUserList();
+                if (name.equals("HTTPSERVER")) {
+                    try {
+                        Server.removeHandler(this);
+                        send("" + Server.getNumberOfClients());
+                    }
+                    catch (InterruptedException ex) {
+                        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                else {
+                    Server.broadcastUserList();
+                }
             }
             if (command.equals(ProtocolStrings.SEND)) {
                 message = partsArray[2];
