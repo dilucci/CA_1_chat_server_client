@@ -33,7 +33,7 @@ public class MockServer {
         try {
             serverSocket = new ServerSocket();
             serverSocket.bind(new InetSocketAddress(ip, port));
-            System.out.println("SERVER STARTED!");
+            System.out.println("MOCK SERVER STARTED!");
             do {
                 Socket socket = serverSocket.accept(); //Important Blocking call
                 inputServer = new Scanner(socket.getInputStream());
@@ -51,8 +51,8 @@ public class MockServer {
     public static String inputServerString(){
         return inputServer.nextLine();
     }
-//    
-//    public static void stopServer() {
-//        keepRunning = false;
-//    }
+    
+    public static void stopServer() {
+        keepRunning = false;
+    }
 }

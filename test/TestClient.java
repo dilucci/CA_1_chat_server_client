@@ -6,6 +6,8 @@
 
 import echoclient.EchoClient;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -39,7 +41,7 @@ public class TestClient {
     }
     @AfterClass
     public static void tearDownClass() {
-//        MockServer.stopServer();
+        MockServer.stopServer();
     }
 
     @Before
@@ -54,18 +56,62 @@ public class TestClient {
     public void connect() throws IOException{
         testClient1.connect("localhost", 9090, "Hans");
         assertEquals("CONNECT#Hans", MockServer.inputServerString());
-
+//        testClient1.stopClient();
+        
         testClient2.connect("localhost", 9090, "Ib");
         assertEquals("CONNECT#Ib", MockServer.inputServerString());
+//        testClient2.stopClient();
     }
     
-//    @Test
-//    public void send() throws IOException {
-//        ArrayList<String> receivers = new ArrayList<>();
-//        receivers.add("Ib");
-//        testClient1.send("Hej Ib", receivers);
-//        assertEquals("SEND#Ib#Hej Ib", mockServer.inputServerString());
-//    }
+    @Test
+    public void closeClient() throws IOException{
+        testClient1.connect("localhost", 9090, "Hans");
+        assertEquals("CONNECT#Hans", MockServer.inputServerString());
+        
+        testClient1.stopClient();
+        assertEquals("CLOSE#", MockServer.inputServerString());
+    }
+    
+    @Test
+    public void sendOne() throws IOException {
+        testClient1.connect("localhost", 9090, "Hans");
+        assertEquals("CONNECT#Hans", MockServer.inputServerString());
+        
+        List<String> receivers = new ArrayList<>();
+        receivers.add("Ib");
+        testClient1.send("Hej Ib", receivers);
+        assertEquals("SEND#Ib#Hej Ib", MockServer.inputServerString());
+    }
+    
+    @Test
+    public void sendMultiple() throws IOException {
+        testClient1.connect("localhost", 9090, "Hans");
+        assertEquals("CONNECT#Hans", MockServer.inputServerString());
+        
+        List<String> receivers = new ArrayList<>();
+        receivers.add("Ib");
+        receivers.add("Hans");
+        testClient1.send("Hej Ib og Hans", receivers);
+        assertEquals("SEND#Ib,Hans#Hej Ib og Hans", MockServer.inputServerString());
+    }
+    
+    @Test
+    public void sendAll() throws IOException {
+        testClient1.connect("localhost", 9090, "Hans");
+        assertEquals("CONNECT#Hans", MockServer.inputServerString());
+        
+        List<String> noReceivers = new ArrayList<>();
+        testClient1.send("Hej alle", noReceivers);
+        assertEquals("SEND#*#Hej alle", MockServer.inputServerString());
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 
 //    @Test
 //    public void send() throws IOException {

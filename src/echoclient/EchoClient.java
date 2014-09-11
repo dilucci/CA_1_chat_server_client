@@ -42,8 +42,8 @@ public class EchoClient extends Thread {
     public void send(String msg, List<String> receivers) {
         if (receivers.size() > 0) {
             String receiverString = "";
-            for (String user : receivers) {
-                receiverString = receiverString + user + ",";
+            for (String receiverName : receivers) {
+                receiverString = receiverString + receiverName + ",";
             }
 //            System.out.println("ReceiverString: " + receiverString);
             if (receiverString.endsWith(",")) {
