@@ -272,6 +272,12 @@ public class EchoClientGUI extends javax.swing.JFrame implements EchoListener {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        int port = 9090;
+        String ip = "localhost";
+        if (args.length == 2) {
+            port = Integer.parseInt(args[0]);
+            ip = args[1];
+        }
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

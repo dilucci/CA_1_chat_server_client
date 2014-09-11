@@ -16,7 +16,7 @@ import shared.ProtocolStrings;
 
 public class EchoClient extends Thread {
 
-    Socket socket;
+    private Socket socket;
     private int port;
     private InetAddress serverAddress;
     private Scanner input;
@@ -102,36 +102,6 @@ public class EchoClient extends Thread {
 //        }
 //        return msg;
 //    }
-    public static void main(String[] args) {
-        int port = 9090;
-        String ip = "localhost";
-        if (args.length == 2) {
-            port = Integer.parseInt(args[0]);
-            ip = args[1];
-        }
-//        try {
-//            EchoClient tester = new EchoClient();
-//            tester.registerEchoListener(new EchoListener() {
-//
-//                @Override
-//                public void messageArrived(String data) {
-//                    System.out.println("test " + data);
-//                }
-//            });
-//
-//            tester.connect(ip, port, "test");
-//            System.out.println("Sending 'Hello world'");
-//            tester.send("Hello World");
-//            System.out.println("Waiting for a reply");
-//            tester.stopClient();
-//        }
-//        catch (UnknownHostException ex) {
-//            Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        catch (IOException ex) {
-//            Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }
 
     @Override
     public void run() {

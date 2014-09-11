@@ -25,6 +25,10 @@ public class EchoServer {
     protected static void removeHandler(ClientHandler ch) {
         clients.remove(ch);
     }
+    
+//    protected static synchronized void addHandler(ClientHandler ch){
+//        clients.add(ch);
+//    }
 
     public static void send(String messageString, String msg, String... receivers) {
         if (receivers.length > 0) {  // sends to specific users if array.length > 0
@@ -43,7 +47,7 @@ public class EchoServer {
         }
     }
 
-    protected static void broadcastUserList() {
+    protected static synchronized void broadcastUserList() {
         ArrayList<String> userList = new ArrayList<>();
         for (ClientHandler ch : clients) {
             userList.add(ch.getUserName());
@@ -68,13 +72,6 @@ public class EchoServer {
                 ClientHandler clientHandler = new ClientHandler(socket);
                 clients.add(clientHandler);
                 clientHandler.start();
-                try {
-                    Thread.sleep(1000); // Short delay to ensure that the recently addition to "clients" arrayList has time to reach memory before broadcastUserList().
-                }
-                catch (InterruptedException ex) {
-                    Logger.getLogger(EchoServer.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                broadcastUserList();
             }
             while (keepRunning);
         }
