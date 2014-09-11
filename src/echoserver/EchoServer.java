@@ -26,9 +26,14 @@ public class EchoServer {
         clients.remove(ch);
     }
     
-//    protected static synchronized void addHandler(ClientHandler ch){
-//        clients.add(ch);
-//    }
+    public static int getNumberOfClients() throws InterruptedException{
+        Thread.sleep(100); //fake pause
+        return clients.size();
+    }
+    
+    public List<ClientHandler> getClients(){
+        return clients;
+    }
 
     public static void send(String messageString, String msg, String... receivers) {
         if (receivers.length > 0) {  // sends to specific users if array.length > 0

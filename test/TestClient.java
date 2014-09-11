@@ -5,28 +5,23 @@
  */
 
 import echoclient.EchoClient;
-import echoserver.EchoServer;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Properties;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import utils.Utils;
 
 /**
- * @author Lars Mortensen
+ * @author Gruppe4
  */
 public class TestClient {
 
-    private EchoClient testClient;
-    private Socket socket;
-    private ServerSocket serverSocket;
-    private final Properties properties = Utils.initProperties("server.properties");
+    private EchoClient testClient1;
+    private EchoClient testClient2;
+    private String ip;
+    private int port;
+    private static MockServer mockServer;
 
     public TestClient() {
     }
@@ -36,42 +31,62 @@ public class TestClient {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                EchoServer.main(null);
+                MockServer.main(null);
+//                mockServer = new MockServer();
+//                mockServer.
             }
         }).start();
     }
-
     @AfterClass
     public static void tearDownClass() {
-        EchoServer.stopServer();
+//        MockServer.stopServer();
     }
 
     @Before
     public void setUp() throws IOException {
-        int port = 0;
-        String ip = "localhost";
-        serverSocket = new ServerSocket();
-        serverSocket.bind(new InetSocketAddress(ip, port));
-        socket = new Socket(ip, port);
-        testClient = new EchoClient();
-
+        testClient1 = new EchoClient();
+        testClient2 = new EchoClient();
+        ip = "localhost";
+        port = 9090;
     }
 
     @Test
-    public void connect() throws IOException {
-        testClient.connect("localhost", 0, "Hans");
-        assertEquals(socket, serverSocket.accept());
+    public void connect() throws IOException{
+        testClient1.connect("localhost", 9090, "Hans");
+        assertEquals("CONNECT#Hans", MockServer.inputServerString());
 
-//    assertEquals("HELLO", client.receive());
+        testClient2.connect("localhost", 9090, "Ib");
+        assertEquals("CONNECT#Ib", MockServer.inputServerString());
     }
+    
+//    @Test
+//    public void send() throws IOException {
+//        ArrayList<String> receivers = new ArrayList<>();
+//        receivers.add("Ib");
+//        testClient1.send("Hej Ib", receivers);
+//        assertEquals("SEND#Ib#Hej Ib", mockServer.inputServerString());
+//    }
 
 //    @Test
 //    public void send() throws IOException {
-//        EchoClient client = new EchoClient();
-//        client.connect("localhost", 9090);
-//        client.send("Hello");
-//        assertEquals("HELLO", client.getMessage());
+//        socket = new Socket("localhost", 9090);
+//        input = new Scanner(socket.getInputStream());
+//        testClient1.connect("localhost", 9090, "Hans");
+//        testClient2.connect("localhost", 9090, "Ib");
+//        System.out.println("første: " + input.nextLine());
+//        System.out.println("første: " + input.nextLine());
+//        ArrayList<String> receivers = new ArrayList<>();
+//        ArrayList<ClientHandler> users = new ArrayList<>();
+//        receivers.add("Ib");
+//        testClient1.send("Hej Ib din gamle svinger!", receivers);
+//        assertEquals("SEND#Ib#Hej Ib din gamle svinger!", input.nextLine());
+//        for (ClientHandler user : users) {
+//            if (user.getUserName().equals("Ib")) {
+//                String msg = user.input.nextLine();
+//                assertEquals("SEND#Ib#Hej Ib din gamle svinger!", msg);
+//            }
+//        }
 //
-////    assertEquals("HELLO", client.receive());
+//        assertEquals("Hej Ib din gamle svinger!", testClient2.getMessage());
 //    }
 }
