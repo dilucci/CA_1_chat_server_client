@@ -1,0 +1,16 @@
+sep 12, 2014 12:30:40 AM Server.Server main
+INFO: Server started
+sep 12, 2014 12:30:44 AM Server.Server main
+INFO: Connected to a client
+sep 12, 2014 12:30:44 AM Server.ClientHandler run
+INFO: Received the message: CONNECT#HTTPSERVER 
+sep 12, 2014 12:30:44 AM Server.ClientHandler run
+INFO: Returned the message: CONNECT#HTTPSERVER 
+sep 12, 2014 12:30:59 AM Server.Server main
+INFO: Connected to a client
+sep 12, 2014 12:30:59 AM Server.ClientHandler run
+INFO: Received the message: CONNECT#DAGF 
+sep 12, 2014 12:30:59 AM Server.ClientHandler run
+INFO: Returned the message: CONNECT#DAGF 
+sep 12, 2014 12:31:02 AM Server.ClientHandler run
+INFO: Returned the message: CONNECT#HTTPSERVER 

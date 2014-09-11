@@ -52,31 +52,27 @@ public class FirstHttpServer1 {
         System.out.println("Started the server, listening on:");
         System.out.println("port: " + port);
         System.out.println("ip: " + ip);
-        System.out.println("pages: " + contentFolder);
     }
 
     static class WelcomeHandler implements HttpHandler {
 
         @Override
         public void handle(HttpExchange he) throws IOException {
-            StringBuilder sb = new StringBuilder();
-            sb.append("<!DOCTYPE html>\n");
-            sb.append("<html>\n");
-            sb.append("<head>\n");
-            sb.append("<title>My fancy Web Site</title>\n");
-            sb.append("<meta charset='UTF-8'>\n");
-            sb.append("</head>\n");
-            sb.append("<body>\n");
-            sb.append("<h2>Welcome to my very first home made Web Server :-)</h2>\n");
-            sb.append("</body>\n");
-            sb.append("</html>\n");
-            String response = sb.toString();
+            File file = new File(contentFolder + "CA-home.html");
+            byte[] bytesToSend = new byte[(int) file.length()];
+            try {
+                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                bis.read(bytesToSend, 0, bytesToSend.length);
+            }
+            catch (IOException ie) {
+                ie.printStackTrace();
+            }
             Headers h = he.getResponseHeaders();
             h.add("Content-Type", "text/html");
-            he.sendResponseHeaders(200, response.length());
-            try (PrintWriter pw = new PrintWriter(he.getResponseBody())) {
-                pw.print(response);
-            };
+            he.sendResponseHeaders(200, bytesToSend.length);
+            try (OutputStream os = he.getResponseBody()) {
+                os.write(bytesToSend, 0, bytesToSend.length);
+            }
         }
     }
 
@@ -141,7 +137,6 @@ public class FirstHttpServer1 {
             Headers h = he.getResponseHeaders();
             int index = substring.indexOf(".");
             String extension = substring.substring(index + 1);
-            System.out.println("Extension string: " + extension);
             h.add("Content-Type", "" + extension);
             he.sendResponseHeaders(200, bytesToSend.length);
             try (OutputStream os = he.getResponseBody()) {
@@ -186,7 +181,16 @@ public class FirstHttpServer1 {
 
         @Override
         public void handle(HttpExchange he) throws IOException {
-            httpHelper.connect("localhost", 9090);
+            int count = 0;
+            String errorMessage = "";
+            try {
+                httpHelper.connect("localhost", 9090);
+                count = httpHelper.getOnlineUsers();
+            }
+            catch (Exception e) {
+                errorMessage = "Could not establish connection to the chat-server.";
+            }
+
             StringBuilder sb = new StringBuilder();
             sb.append("<!DOCTYPE html>\n");
             sb.append("<html>\n");
@@ -195,8 +199,9 @@ public class FirstHttpServer1 {
             sb.append("<meta charset='UTF-8'>\n");
             sb.append("</head>\n");
             sb.append("<body>\n");
-            sb.append("<p>Online Users: " + httpHelper.getOnlineUsers() + "</p>\n");
-            sb.append("<a href='CA-home.html'>Home</a>\n");
+            sb.append("<p>Online Users: " + count + "</p>\n");
+            sb.append("<p>" + errorMessage + "</p>\n");
+            sb.append("<a href='http://localhost:8080/welcome'>Home</a>\n");
             sb.append("</body>\n");
             sb.append("</html>\n");
             String response = sb.toString();
