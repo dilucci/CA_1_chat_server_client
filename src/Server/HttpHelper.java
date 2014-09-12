@@ -34,16 +34,11 @@ public class HttpHelper extends Thread {
             output = new PrintWriter(socket.getOutputStream(), true);  //Set to true, to get auto flush behaviour
             start();
         }
-        command(ProtocolStrings.CONNECT + USER_NAME);
     }
-
-    public void command(String commandString) {
-        output.println(commandString);
-    }
-
     public int getOnlineUsers() {
-        String msg = input.nextLine();
-        return Integer.parseInt(msg);
+        output.println("ONLINEUSERS#");
+        String onlineUsers = input.nextLine();
+        return Integer.parseInt(onlineUsers);
     }
 
     public void disconnect() {
@@ -51,9 +46,8 @@ public class HttpHelper extends Thread {
     }
 
     public String getChatLog() {
-        String chatLogString = input.nextLine();
         output.println("CHATLOG#");
-        chatLogString = input.nextLine();
+        String chatLogString = input.nextLine();
         System.out.println("chatlogHTTPHELPER: " + chatLogString);
         return chatLogString;
     }

@@ -70,21 +70,20 @@ public class ClientHandler extends Thread {
                     Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+
+            if (command.equals("ONLINEUSERS#")) {
+                try {
+                    Server.removeHandler(this);
+                    send("" + Server.getNumberOfClients());
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
             if (command.equals(ProtocolStrings.CONNECT)) { //add new users and broadcast new users connected.
                 String name = partsArray[1];
                 setUserName(name);
-                if (name.equals("HTTPSERVER")) {
-                    try {
-                        Server.removeHandler(this);
-                        send("" + Server.getNumberOfClients());
-                    }
-                    catch (InterruptedException ex) {
-                        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-                else {
-                    Server.broadcastUserList();
-                }
+                Server.broadcastUserList();
             }
             if (command.equals(ProtocolStrings.SEND)) {
                 message = partsArray[2];
@@ -94,8 +93,7 @@ public class ClientHandler extends Thread {
                 if (partsArray[1].contains(",")) {                  // sends to specified users
                     String[] receivers = partsArray[1].split(",");
                     Server.message(ProtocolStrings.MESSAGE + getUserName() + "#", message, receivers);
-                }
-                else {                                              // sends to 1 user
+                } else {                                              // sends to 1 user
                     Server.message(ProtocolStrings.MESSAGE + getUserName() + "#", message, partsArray[1]);
                 }
             }
@@ -107,8 +105,7 @@ public class ClientHandler extends Thread {
         Server.broadcastUserList();
         try {
             socket.close();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         Logger.getLogger(Server.class.getName()).log(Level.INFO, "Closed a Connection");
