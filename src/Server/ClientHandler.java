@@ -57,20 +57,15 @@ public class ClientHandler extends Thread {
     @Override
     public void run() {
         String message = input.nextLine(); //IMPORTANT blocking call
-        Logger.getLogger(Server.class.getName()).log(Level.INFO, String.format("Received the message: %1$S ", message));
+        
         while (!message.equals(ProtocolStrings.CLOSE)) {
 
             String[] partsArray = message.split("#", 3);  // entire command including COMMAND, NAMES and MESSAGE. Should this be refactor into seperate method?
             String command = partsArray[0] + "#";
             if (command.equals("CHATLOG#")) {
-                try {
                     String chatLogString = Server.readChatLog();
                     send(chatLogString);
-                } catch (IOException ex) {
-                    Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
-
             if (command.equals("ONLINEUSERS#")) {
                 try {
                     Server.removeHandler(this);
@@ -84,8 +79,10 @@ public class ClientHandler extends Thread {
                 String name = partsArray[1];
                 setUserName(name);
                 Server.broadcastUserList();
+                Logger.getLogger(Server.class.getName()).log(Level.INFO, String.format("[" + userName + "] connected: %1$S ", message));
             }
             if (command.equals(ProtocolStrings.SEND)) {
+                Logger.getLogger(Server.class.getName()).log(Level.INFO, String.format("[" + userName + "] sent: %1$S ", message));
                 message = partsArray[2];
                 if (partsArray[1].equals("*")) {                    // sends to all users
                     Server.message(ProtocolStrings.MESSAGE + getUserName() + "#", message);
@@ -97,7 +94,7 @@ public class ClientHandler extends Thread {
                     Server.message(ProtocolStrings.MESSAGE + getUserName() + "#", message, partsArray[1]);
                 }
             }
-            Logger.getLogger(Server.class.getName()).log(Level.INFO, String.format("Returned the message: %1$S ", message));
+            
             message = input.nextLine(); //IMPORTANT blocking call
         }
         writer.println(ProtocolStrings.CLOSE); //Echo the stop message back to the client for a nice closedown
@@ -105,9 +102,10 @@ public class ClientHandler extends Thread {
         Server.broadcastUserList();
         try {
             socket.close();
+            
         } catch (IOException ex) {
             Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Logger.getLogger(Server.class.getName()).log(Level.INFO, "Closed a Connection");
+        Logger.getLogger(Server.class.getName()).log(Level.INFO, String.format("[" + userName + "] disconnected: %1$S ", message));
     }
 }

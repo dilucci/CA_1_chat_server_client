@@ -45,18 +45,18 @@ public class Server {
         return clients;
     }
 
-    public static void message(String messageString, String msg, String... receivers) {
+    public static void message(String command, String msg, String... receivers) {
         if (receivers.length > 0) {  // sends to specific users if array.length > 0
             for (String receiver : receivers) {
                 for (ClientHandler ch : clients) {
                     if (ch.getUserName().equals(receiver)) {
-                        ch.send(messageString + msg);
+                        ch.send(command + msg);
                     }
                 }
             }
         } else {
             for (ClientHandler ch : clients) {  // sends to all users, since none were specified
-                ch.send(messageString + msg);
+                ch.send(command + msg);
             }
         }
     }
@@ -71,18 +71,28 @@ public class Server {
         }
     }
 
-    public static String readChatLog() throws IOException {
+    /**
+     Reads and sends chatlog to HttpServer, for displaying on web-server.
+    @return String chatLog
+    @throws IOException 
+    */
+    public static String readChatLog() {
         File file = new File("chatLog.txt");
         String chatLog = "";
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
+            
             while (line != null) {
                 sb.append(line);
                 sb.append("%#¤");
                 line = br.readLine();
             }
             chatLog = sb.toString();
+        }
+        catch (IOException ex) {
+            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return chatLog;
     }
@@ -94,16 +104,10 @@ public class Server {
         Utils.setLogFile(logFile, Server.class.getName());
         Logger.getLogger(Server.class.getName()).log(Level.INFO, "Server started");
         try {
-            System.out.println(readChatLog());
-        } catch (IOException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
             serverSocket = new ServerSocket();
             serverSocket.bind(new InetSocketAddress(ip, port));
             do {
                 Socket socket = serverSocket.accept(); //Important Blocking call
-                Logger.getLogger(Server.class.getName()).log(Level.INFO, "Connected to a client");
                 ClientHandler clientHandler = new ClientHandler(socket);
                 addHandler(clientHandler);
                 clientHandler.start();
