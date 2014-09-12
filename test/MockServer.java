@@ -19,7 +19,7 @@ import utils.Utils;
  *
  * @author Gruppe 4, Andreas, Michael og Sebastian
  */
-public class MockServer {
+public class MockServer extends Thread{
 
     private static ServerSocket serverSocket;
     private static Scanner inputServer;

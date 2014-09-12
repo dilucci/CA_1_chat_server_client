@@ -26,8 +26,12 @@ public class Server {
         keepRunning = false;
     }
 
-    protected static void removeHandler(ClientHandler ch) {
+    protected static synchronized void removeHandler(ClientHandler ch) {
         clients.remove(ch);
+    }
+    
+    protected static synchronized void addHandler(ClientHandler ch){
+        clients.add(ch);
     }
 
     public static int getNumberOfClients() throws InterruptedException {
@@ -78,7 +82,7 @@ public class Server {
                 Socket socket = serverSocket.accept(); //Important Blocking call
                 Logger.getLogger(Server.class.getName()).log(Level.INFO, "Connected to a client");
                 ClientHandler clientHandler = new ClientHandler(socket);
-                clients.add(clientHandler);
+                addHandler(clientHandler);
                 clientHandler.start();
             }
             while (keepRunning);

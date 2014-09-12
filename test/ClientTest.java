@@ -10,6 +10,7 @@ import Client.Client;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -52,55 +53,83 @@ public class ClientTest {
         ip = "localhost";
         port = 9090;
     }
+    
+//    @After
+//    public void tearDown() throws IOException {
+//        testClient1.stopClient();
+//        testClient2.stopClient();
+//    }
 
     @Test
-    public void connect() throws IOException{
+    public void connect() throws IOException, InterruptedException{
         testClient1.connect("localhost", 9090, "Hans");
+        Thread.sleep(2000);
         assertEquals("CONNECT#Hans", MockServer.inputServerString());
         
+        
+        
         testClient2.connect("localhost", 9090, "Ib");
+        Thread.sleep(500);
         assertEquals("CONNECT#Ib", MockServer.inputServerString());
+        
+        
     }
     
     @Test
-    public void closeClient() throws IOException{
+    public void closeClient() throws IOException, InterruptedException{
         testClient1.connect("localhost", 9090, "Hans");
+        Thread.sleep(500);
         assertEquals("CONNECT#Hans", MockServer.inputServerString());
         
+        
+        
         testClient1.stopClient();
+        Thread.sleep(500);
         assertEquals("CLOSE#", MockServer.inputServerString());
     }
     
     @Test
-    public void sendOne() throws IOException {
+    public void sendOne() throws IOException, InterruptedException {
         testClient1.connect("localhost", 9090, "Hans");
+        Thread.sleep(500);
         assertEquals("CONNECT#Hans", MockServer.inputServerString());
+        
+        
         
         List<String> receivers = new ArrayList<>();
         receivers.add("Ib");
         testClient1.send("Hej Ib", receivers);
+        Thread.sleep(500);
         assertEquals("SEND#Ib#Hej Ib", MockServer.inputServerString());
     }
     
     @Test
-    public void sendMultiple() throws IOException {
+    public void sendMultiple() throws IOException, InterruptedException {
         testClient1.connect("localhost", 9090, "Hans");
+        Thread.sleep(500);
         assertEquals("CONNECT#Hans", MockServer.inputServerString());
+        
+        
         
         List<String> receivers = new ArrayList<>();
         receivers.add("Ib");
         receivers.add("Hans");
         testClient1.send("Hej Ib og Hans", receivers);
+        Thread.sleep(500);
         assertEquals("SEND#Ib,Hans#Hej Ib og Hans", MockServer.inputServerString());
     }
     
     @Test
-    public void sendAll() throws IOException {
+    public void sendAll() throws IOException, InterruptedException {
         testClient1.connect("localhost", 9090, "Hans");
+        Thread.sleep(500);
         assertEquals("CONNECT#Hans", MockServer.inputServerString());
+        
+        
         
         List<String> noReceivers = new ArrayList<>();
         testClient1.send("Hej alle", noReceivers);
+        Thread.sleep(500);
         assertEquals("SEND#*#Hej alle", MockServer.inputServerString());
     }
     

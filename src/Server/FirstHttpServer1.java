@@ -47,6 +47,7 @@ public class FirstHttpServer1 {
         server.createContext("/pages/", new PagesHandler(contentFolder));
         server.createContext("/parameters", new ParametersHandler());
         server.createContext("/onlineusers", new OnlineUsersHandler());
+        server.createContext("/chatlog", new ChatLogHandler());
         server.setExecutor(null);
         server.start();
         System.out.println("Started the server, listening on:");
@@ -211,6 +212,35 @@ public class FirstHttpServer1 {
             try (PrintWriter pw = new PrintWriter(he.getResponseBody())) {
                 pw.print(response);
             };
+        }
+    }
+
+    private static class ChatLogHandler implements HttpHandler {
+
+        @Override
+        public void handle(HttpExchange he) throws IOException {
+            String errorMessage = "";
+            try {
+                httpHelper.connect("localhost", 9090);
+            }
+            catch (Exception e) {
+                errorMessage = "Could not establish connection to the chat-server.";
+            }
+            File file = new File(contentFolder + "CA-home.html");
+            byte[] bytesToSend = new byte[(int) file.length()];
+            try {
+                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                bis.read(bytesToSend, 0, bytesToSend.length);
+            }
+            catch (IOException ie) {
+                ie.printStackTrace();
+            }
+            Headers h = he.getResponseHeaders();
+            h.add("Content-Type", "text/html");
+            he.sendResponseHeaders(200, bytesToSend.length);
+            try (OutputStream os = he.getResponseBody()) {
+                os.write(bytesToSend, 0, bytesToSend.length);
+            }
         }
     }
 }
