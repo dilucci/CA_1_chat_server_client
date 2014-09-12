@@ -32,7 +32,6 @@ public class MockServer extends Thread{
         try {
             serverSocket = new ServerSocket();
             serverSocket.bind(new InetSocketAddress(ip, port));
-            System.out.println("MOCK SERVER STARTED!");
             do {
                 Socket socket = serverSocket.accept(); //Important Blocking call
                 inputServer = new Scanner(socket.getInputStream());
