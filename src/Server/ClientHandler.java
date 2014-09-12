@@ -62,7 +62,14 @@ public class ClientHandler extends Thread {
 
             String[] partsArray = message.split("#", 3);  // entire command including COMMAND, NAMES and MESSAGE. Should this be refactor into seperate method?
             String command = partsArray[0] + "#";
-
+            if (command.equals("CHATLOG#")) {
+                try {
+                    String chatLogString = Server.readChatLog();
+                    send(chatLogString);
+                } catch (IOException ex) {
+                    Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             if (command.equals(ProtocolStrings.CONNECT)) { //add new users and broadcast new users connected.
                 String name = partsArray[1];
                 setUserName(name);

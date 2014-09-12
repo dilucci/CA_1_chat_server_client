@@ -64,8 +64,7 @@ public class FirstHttpServer1 {
             try {
                 BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
                 bis.read(bytesToSend, 0, bytesToSend.length);
-            }
-            catch (IOException ie) {
+            } catch (IOException ie) {
                 ie.printStackTrace();
             }
             Headers h = he.getResponseHeaders();
@@ -131,8 +130,7 @@ public class FirstHttpServer1 {
             try {
                 BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
                 bis.read(bytesToSend, 0, bytesToSend.length);
-            }
-            catch (IOException ie) {
+            } catch (IOException ie) {
                 ie.printStackTrace();
             }
             Headers h = he.getResponseHeaders();
@@ -187,8 +185,7 @@ public class FirstHttpServer1 {
             try {
                 httpHelper.connect("localhost", 9090);
                 count = httpHelper.getOnlineUsers();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 errorMessage = "Could not establish connection to the chat-server.";
             }
 
@@ -220,27 +217,36 @@ public class FirstHttpServer1 {
         @Override
         public void handle(HttpExchange he) throws IOException {
             String errorMessage = "";
+            String chatLog = "";
             try {
                 httpHelper.connect("localhost", 9090);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 errorMessage = "Could not establish connection to the chat-server.";
             }
-            File file = new File(contentFolder + "CA-home.html");
-            byte[] bytesToSend = new byte[(int) file.length()];
-            try {
-                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-                bis.read(bytesToSend, 0, bytesToSend.length);
+            chatLog = httpHelper.getChatLog();
+            System.out.println("chatLog: "+chatLog);
+            String[] stringArray = chatLog.split("%#¤");
+            StringBuilder sb = new StringBuilder();
+            sb.append("<!DOCTYPE html>\n");
+            sb.append("<html>\n");
+            sb.append("<head>\n");
+            sb.append("<title>Chat-log</title>\n");
+            sb.append("<meta charset='UTF-8'>\n");
+            sb.append("</head>\n");
+            sb.append("<body>\n");
+            for (String string : stringArray) {
+                sb.append("<p>"+string+"</p>\n");
             }
-            catch (IOException ie) {
-                ie.printStackTrace();
-            }
+            sb.append("</body>\n");
+            sb.append("</html>\n");
+
+            String response = sb.toString();
             Headers h = he.getResponseHeaders();
             h.add("Content-Type", "text/html");
-            he.sendResponseHeaders(200, bytesToSend.length);
-            try (OutputStream os = he.getResponseBody()) {
-                os.write(bytesToSend, 0, bytesToSend.length);
-            }
+            he.sendResponseHeaders(200, response.length());
+            try (PrintWriter pw = new PrintWriter(he.getResponseBody())) {
+                pw.print(response);
+            };
         }
     }
 }

@@ -1,5 +1,8 @@
 package Server;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -29,8 +32,8 @@ public class Server {
     protected static synchronized void removeHandler(ClientHandler ch) {
         clients.remove(ch);
     }
-    
-    protected static synchronized void addHandler(ClientHandler ch){
+
+    protected static synchronized void addHandler(ClientHandler ch) {
         clients.add(ch);
     }
 
@@ -51,8 +54,7 @@ public class Server {
                     }
                 }
             }
-        }
-        else {
+        } else {
             for (ClientHandler ch : clients) {  // sends to all users, since none were specified
                 ch.send(messageString + msg);
             }
@@ -69,12 +71,37 @@ public class Server {
         }
     }
 
+    public static String readChatLog() throws IOException {
+        File file = new File("chatLog.txt");
+        String chatLog = "";
+        String chatLogString = "";
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+            System.out.println("line: " + line);
+            while (line != null) {
+//                chatLogString = chatLogString + line +"%#¤";
+                sb.append(line);
+                sb.append("%#¤");
+                line = br.readLine();
+            }
+            chatLog = sb.toString();
+            System.out.println("SERVERCHATLOG: " + chatLog);
+        }
+        return chatLog;
+    }
+
     public static void main(String[] args) {
         int port = Integer.parseInt(properties.getProperty("port"));
         String ip = properties.getProperty("serverIp");
         String logFile = properties.getProperty("logFile");
         Utils.setLogFile(logFile, Server.class.getName());
         Logger.getLogger(Server.class.getName()).log(Level.INFO, "Server started");
+        try {
+            System.out.println(readChatLog());
+        } catch (IOException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try {
             serverSocket = new ServerSocket();
             serverSocket.bind(new InetSocketAddress(ip, port));
@@ -84,13 +111,10 @@ public class Server {
                 ClientHandler clientHandler = new ClientHandler(socket);
                 addHandler(clientHandler);
                 clientHandler.start();
-            }
-            while (keepRunning);
-        }
-        catch (IOException ex) {
+            } while (keepRunning);
+        } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally {
+        } finally {
             Utils.closeLogger(Server.class.getName());
         }
     }
