@@ -220,10 +220,10 @@ public class FirstHttpServer1 {
             String chatLog = "";
             try {
                 httpHelper.connect("localhost", 9090);
+                chatLog = httpHelper.getChatLog();
             } catch (Exception e) {
                 errorMessage = "Could not establish connection to the chat-server.";
             }
-            chatLog = httpHelper.getChatLog();
             String[] stringArray = chatLog.split("%#¤");
             StringBuilder sb = new StringBuilder();
             sb.append("<!DOCTYPE html>\n");
