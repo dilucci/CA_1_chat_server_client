@@ -74,19 +74,15 @@ public class Server {
     public static String readChatLog() throws IOException {
         File file = new File("chatLog.txt");
         String chatLog = "";
-        String chatLogString = "";
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
-            System.out.println("line: " + line);
             while (line != null) {
-//                chatLogString = chatLogString + line +"%#¤";
                 sb.append(line);
                 sb.append("%#¤");
                 line = br.readLine();
             }
             chatLog = sb.toString();
-            System.out.println("SERVERCHATLOG: " + chatLog);
         }
         return chatLog;
     }

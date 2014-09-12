@@ -224,7 +224,6 @@ public class FirstHttpServer1 {
                 errorMessage = "Could not establish connection to the chat-server.";
             }
             chatLog = httpHelper.getChatLog();
-            System.out.println("chatLog: "+chatLog);
             String[] stringArray = chatLog.split("%#¤");
             StringBuilder sb = new StringBuilder();
             sb.append("<!DOCTYPE html>\n");
@@ -234,6 +233,7 @@ public class FirstHttpServer1 {
             sb.append("<meta charset='UTF-8'>\n");
             sb.append("</head>\n");
             sb.append("<body>\n");
+            sb.append("<p>" + errorMessage + "</p>\n");
             for (String string : stringArray) {
                 sb.append("<p>"+string+"</p>\n");
             }

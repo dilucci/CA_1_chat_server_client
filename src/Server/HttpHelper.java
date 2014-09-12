@@ -24,7 +24,6 @@ public class HttpHelper extends Thread {
     private InetAddress serverAddress;
     private Scanner input;
     private PrintWriter output;
-    private final String USER_NAME = "HTTPSERVER";
 
     public void connect(String address, int port) throws UnknownHostException, IOException {
         if (socket == null) {
@@ -48,7 +47,6 @@ public class HttpHelper extends Thread {
     public String getChatLog() {
         output.println("CHATLOG#");
         String chatLogString = input.nextLine();
-        System.out.println("chatlogHTTPHELPER: " + chatLogString);
         return chatLogString;
     }
 }
