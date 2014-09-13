@@ -6,11 +6,10 @@
 
 
 
-import Client.Client;
+import ChatClient.Client;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;

@@ -1,5 +1,5 @@
 
-import Server.Server;
+import ChatServer.Server;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;

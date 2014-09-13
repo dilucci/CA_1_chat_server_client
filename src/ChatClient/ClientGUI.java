@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Client;
+package ChatClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
         addressLabel = new javax.swing.JLabel();
         portTextField = new javax.swing.JTextField();
         portLabel = new javax.swing.JLabel();
-        quitButton = new javax.swing.JButton();
+        disconnectButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         chatTextArea = new javax.swing.JTextArea();
         nameTextField = new javax.swing.JTextField();
@@ -98,10 +98,10 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
 
         portLabel.setText("Port");
 
-        quitButton.setText("Quit");
-        quitButton.addActionListener(new java.awt.event.ActionListener() {
+        disconnectButton.setText("Disconnect");
+        disconnectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                quitButtonActionPerformed(evt);
+                disconnectButtonActionPerformed(evt);
             }
         });
 
@@ -124,7 +124,7 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -143,31 +143,29 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(portLabel)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(portTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(38, 38, 38)
-                                        .addComponent(connectButton))))))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(quitButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(85, 85, 85)
-                            .addComponent(messageLabel)
-                            .addGap(18, 18, 18)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(messageTextField)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(sendButton))))))
+                                    .addComponent(portTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(portLabel))
+                                .addGap(38, 38, 38)
+                                .addComponent(connectButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(disconnectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(85, 85, 85)
+                        .addComponent(messageLabel)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(messageTextField)
+                                .addGap(18, 18, 18)
+                                .addComponent(sendButton)))))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(quitButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(portLabel)
                     .addComponent(addressLabel)
@@ -178,7 +176,8 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(portTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(connectButton)))
+                        .addComponent(connectButton)
+                        .addComponent(disconnectButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chatLabel)
@@ -217,7 +216,7 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
+    private void disconnectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disconnectButtonActionPerformed
         if (!userListModel.isEmpty()) {
             try {
                 chatTextArea.setText("");
@@ -228,7 +227,7 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
                 Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }//GEN-LAST:event_quitButtonActionPerformed
+    }//GEN-LAST:event_disconnectButtonActionPerformed
 
     private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
         if (!nameTextField.getText().isEmpty() && !addressTextField.getText().isEmpty() && !portTextField.getText().isEmpty()) {
@@ -319,6 +318,7 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
     private javax.swing.JLabel chatLabel;
     private javax.swing.JTextArea chatTextArea;
     private javax.swing.JButton connectButton;
+    private javax.swing.JButton disconnectButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -328,7 +328,6 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
     private javax.swing.JTextField nameTextField;
     private javax.swing.JLabel portLabel;
     private javax.swing.JTextField portTextField;
-    private javax.swing.JButton quitButton;
     private javax.swing.JButton sendButton;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JList userList;

@@ -6,6 +6,7 @@
 
 package Server;
 
+import ChatServer.Server;
 import java.io.IOException;
 import java.util.List;
 import org.junit.After;
