@@ -5,6 +5,7 @@
  */
 package ChatClient;
 
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
     private Client client;
     private DefaultListModel<String> userListModel;
 
-    /** Creates new form EchoClientGUI */
+    /** Creates new form ClientGUI */
     public ClientGUI() {
         initComponents();
         client = new Client();
@@ -29,15 +30,6 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
         userListModel = new DefaultListModel<>();
     }
 
-//    private void refreshUserList() {
-//        userListModel.clear();
-//        ArrayList<String> userList = client.getOnlineUsers();
-//        for (Object object : col) {
-//            
-//        }
-//        userListModel.addElement(null);
-//        userList.setModel(userListModel);
-//    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -63,7 +55,7 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
         nameLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         userList = new javax.swing.JList();
-        usersLabel = new javax.swing.JLabel();
+        onlineUsersLabel = new javax.swing.JLabel();
         chatLabel = new javax.swing.JLabel();
         statusLabel = new javax.swing.JLabel();
 
@@ -71,6 +63,12 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
+            }
+        });
+
+        messageTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                messageTextFieldKeyTyped(evt);
             }
         });
 
@@ -90,7 +88,12 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
             }
         });
 
-        addressTextField.setText("localhost");
+        addressTextField.setText("137.135.176.39");
+        addressTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addressTextFieldActionPerformed(evt);
+            }
+        });
 
         addressLabel.setText("Address");
 
@@ -114,7 +117,7 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
 
         jScrollPane2.setViewportView(userList);
 
-        usersLabel.setText("Online users");
+        onlineUsersLabel.setText("Online users");
 
         chatLabel.setText("Chat");
 
@@ -128,38 +131,43 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(usersLabel)
+                            .addComponent(onlineUsersLabel)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(nameLabel)
-                                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(28, 28, 28)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(addressLabel)
-                                    .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(11, 11, 11)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chatLabel)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(portTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(portLabel))
-                                .addGap(38, 38, 38)
-                                .addComponent(connectButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(disconnectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(addressLabel))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(chatLabel)
+                                .addGap(137, 137, 137))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(13, 13, 13)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(portLabel)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(portTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(connectButton)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(disconnectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(85, 85, 85)
                         .addComponent(messageLabel)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(messageTextField)
+                                .addComponent(messageTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
-                                .addComponent(sendButton)))))
+                                .addComponent(sendButton))
+                            .addComponent(jScrollPane1))))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -171,17 +179,16 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
                     .addComponent(addressLabel)
                     .addComponent(nameLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(disconnectButton)
+                    .addComponent(portTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(portTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(connectButton)
-                        .addComponent(disconnectButton)))
+                    .addComponent(connectButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chatLabel)
-                    .addComponent(usersLabel))
+                    .addComponent(onlineUsersLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
@@ -238,7 +245,9 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
                 client.connect(address, port, userName);
             }
             catch (IOException ex) {
+                statusLabel.setText("Could not establish connection to server.");
                 Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, ex);
+                statusLabel.setText("Could not establish connection to server.");
             }
         }
         else {
@@ -266,6 +275,25 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
             Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_formWindowClosing
+
+    private void messageTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_messageTextFieldKeyTyped
+        char c = evt.getKeyChar();
+        if (!messageTextField.getText().isEmpty() && c == KeyEvent.VK_ENTER) {
+            if (!messageTextField.getText().isEmpty()) {
+                List<String> receivers = userList.getSelectedValuesList();
+                String message = messageTextField.getText();
+                for (String name : receivers) {
+                    chatTextArea.append("To " + "[" + name + "]: " + message + "\n");
+                }
+                client.send(message, receivers);
+                messageTextField.setText("");
+            }
+        }
+    }//GEN-LAST:event_messageTextFieldKeyTyped
+
+    private void addressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addressTextFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -326,22 +354,29 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
     private javax.swing.JTextField messageTextField;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextField;
+    private javax.swing.JLabel onlineUsersLabel;
     private javax.swing.JLabel portLabel;
     private javax.swing.JTextField portTextField;
     private javax.swing.JButton sendButton;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JList userList;
-    private javax.swing.JLabel usersLabel;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void messageArrived(String data) {
-        chatTextArea.append(data + "\n");
+        if (data.equals("CLOSE#")) {
+            chatTextArea.append("Thank you for using our chat system, goodbye.");
+        }
+        else{
+        chatTextArea.append(data + "\n");    
+        }
+        
     }
 
     @Override
     public void messageArrived(ArrayList<String> onlineUserList) {
         userListModel.clear();
+        onlineUsersLabel.setText("Online users " + "[" + onlineUserList.size() + "]");
         for (String onlineUser : onlineUserList) {
             userListModel.addElement(onlineUser);
             userList.setModel(userListModel);

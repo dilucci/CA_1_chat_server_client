@@ -51,12 +51,10 @@ public class Client extends Thread {
             for (String receiverName : receivers) {
                 receiverString = receiverString + receiverName + ",";
             }
-//            System.out.println("ReceiverString: " + receiverString);
             if (receiverString.endsWith(",")) {
                 receiverString = receiverString.substring(0, receiverString.length() - 1); // remove last character from the string, which will always be a surplus ","
             }
             msg = receiverString + "#" + msg;
-//            System.out.println("Message: " + msg);
         }
         else {
             msg = "*#" + msg;
@@ -97,18 +95,6 @@ public class Client extends Thread {
         return message;
     }
 
-//    public String receive() {
-//        String msg = input.nextLine();
-//        if (msg.equals(ProtocolStrings.CLOSE)) {
-//            try {
-//                socket.close();
-//            }
-//            catch (IOException ex) {
-//                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        return msg;
-//    }
     @Override
     public void run() {
         String msg = input.nextLine();

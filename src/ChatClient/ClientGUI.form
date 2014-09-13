@@ -55,32 +55,40 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jScrollPane2" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                              <Component id="usersLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="onlineUsersLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="nameLabel" min="-2" max="-2" attributes="0"/>
-                                      <Component id="nameTextField" min="-2" pref="68" max="-2" attributes="0"/>
+                                      <Component id="nameTextField" min="-2" pref="90" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="addressTextField" min="-2" pref="121" max="-2" attributes="0"/>
                                       <Component id="addressLabel" min="-2" max="-2" attributes="0"/>
-                                      <Component id="addressTextField" min="-2" pref="68" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="chatLabel" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="chatLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="137" max="-2" attributes="0"/>
+                              </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="portTextField" alignment="0" min="-2" pref="43" max="-2" attributes="0"/>
-                                      <Component id="portLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="portLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="portTextField" min="-2" pref="43" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="connectButton" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="disconnectButton" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
-                                  <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                                  <Component id="connectButton" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="disconnectButton" min="-2" pref="119" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -90,12 +98,12 @@
                           <Component id="messageLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane1" alignment="0" min="-2" pref="434" max="-2" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <Component id="messageTextField" max="32767" attributes="0"/>
+                                  <Component id="messageTextField" pref="407" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                                   <Component id="sendButton" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="jScrollPane1" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -113,19 +121,17 @@
                       <Component id="nameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="addressTextField" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="nameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="portTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="connectButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="disconnectButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="nameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="disconnectButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="portTextField" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="addressTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="connectButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="55" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="chatLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="usersLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="onlineUsersLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -147,6 +153,9 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="messageTextField">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="messageTextFieldKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="sendButton">
           <Properties>
@@ -171,8 +180,11 @@
         </Component>
         <Component class="javax.swing.JTextField" name="addressTextField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="localhost"/>
+            <Property name="text" type="java.lang.String" value="137.135.176.39"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addressTextFieldActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="addressLabel">
           <Properties>
@@ -236,7 +248,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JLabel" name="usersLabel">
+        <Component class="javax.swing.JLabel" name="onlineUsersLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="Online users"/>
           </Properties>
