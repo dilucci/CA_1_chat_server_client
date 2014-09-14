@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
 
 /**
  *
@@ -59,7 +60,7 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
         chatLabel = new javax.swing.JLabel();
         statusLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -89,11 +90,6 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
         });
 
         addressTextField.setText("137.135.176.39");
-        addressTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addressTextFieldActionPerformed(evt);
-            }
-        });
 
         addressLabel.setText("Address");
 
@@ -179,12 +175,13 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
                     .addComponent(addressLabel)
                     .addComponent(nameLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(disconnectButton)
-                    .addComponent(portTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(connectButton))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(portTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(disconnectButton)
+                        .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(connectButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chatLabel)
@@ -268,11 +265,17 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
     }//GEN-LAST:event_sendButtonActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        try {
-            client.stopClient();
+        if (client.isAlive()) {
+            try {
+                client.stopClient();
+            }
+            catch (IOException ex) {
+                Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        catch (IOException ex) {
-            Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, ex);
+        else {
+            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         }
     }//GEN-LAST:event_formWindowClosing
 
@@ -290,10 +293,6 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
             }
         }
     }//GEN-LAST:event_messageTextFieldKeyTyped
-
-    private void addressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addressTextFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -367,10 +366,10 @@ public class ClientGUI extends javax.swing.JFrame implements ClientListener {
         if (data.equals("CLOSE#")) {
             chatTextArea.append("Thank you for using our chat system, goodbye.");
         }
-        else{
-        chatTextArea.append(data + "\n");    
+        else {
+            chatTextArea.append(data + "\n");
         }
-        
+
     }
 
     @Override
